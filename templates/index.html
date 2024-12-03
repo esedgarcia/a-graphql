@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple frontend to GraphQL test</title>
+</head>
+<body>
+  <h1>GraphQL Kenobi greeting</h1>
+  <button id="fetchGreeting">Click to connect with the force</button>
+  <p id="result"></p>
+
+  <script>
+    document.getElementById("fetchGreeting").addEventListener("click", async () => {
+      const query = `{ hello(name: "General Kenobi!") }`;
+      try {
+        const response = await fetch("http://localhost:5000/graphql", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query }),
+        });
+        const data = await response.json();
+        document.getElementById("result").textContent = data.data.hello || "No greeting found!";
+      } catch (error) {
+        document.getElementById("result").textContent = "Error: " + error.message;
+      }
+    });
+  </script>
+</body>
+</html>
